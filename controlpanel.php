@@ -1,3 +1,15 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION["username"])) {
+header('Location: login.php');
+}
+
+?>
+
+<a href="./app/logoutscript.php">Log Out</a>
+
 <h1>New Post</h1>
 <form role="form" action="./app/postblog.php" method="post">
   <input name="title" rows="8" cols="80"></input><br>
