@@ -15,7 +15,7 @@ foreach ($posts as $blogpost) {
   $correct_date = strtotime($blogpost['blogdate']);
   $blog_title = $blogpost['blogtitle'];
 
-  echo "<tr><td><a href=\"./blog.php?b=$blog_id\">",$blog_title,"</a></td><td>",date('d/m/Y', $correct_date),"</td><td><button type=\"button\">Edit</button></td><td><button type=\"button\">Delete</button></td></tr>";
+  echo "<tr><td><a href=\"./blog.php?b=$blog_id\">",$blog_title,"</a></td><td>",date('d/m/Y', $correct_date),"</td><td><button type=\"button\">Edit</button></td><td><a href=\"./app/deleteblog.php?b=$blog_id\">Delete</a></td></tr>";
 }
 
 echo "</table>";
