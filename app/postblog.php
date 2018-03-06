@@ -12,6 +12,13 @@ $sql = 'INSERT INTO blog_posts (userid, blogtitle, blogcontent, blogdate) VALUES
 $stmt= $pdo->prepare($sql);
 $stmt->execute([$user_id, $blog_title, $blog_content, $blog_date]);
 
-header("location: ../controlpanel.php");
+if ($stmt->execute() == 1 ) {
+  echo "Success";
+  //header("location: ../controlpanel.php");
+} else {
+  echo "Fail";
+}
+
+
 
 ?>

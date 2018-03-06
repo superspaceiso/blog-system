@@ -2,8 +2,10 @@
 
 require 'db.php';
 
-$stmt = $pdo->query('SELECT blog_posts.blogid,blog_posts.userid,blog_posts.blogtitle,blog_posts.blogcontent,blog_posts.blogdate FROM blog_posts');
-$stmt->execute();
+$user_id = $_SESSION["id"];
+
+$stmt = $pdo->prepare('SELECT blogid,userid,blogtitle,blogcontent,blogdate FROM blog_posts WHERE userid=?');
+$stmt->execute([$user_id]);
 $posts = $stmt->fetchAll();
 
 echo "<table>";
@@ -15,7 +17,7 @@ foreach ($posts as $blogpost) {
   $correct_date = strtotime($blogpost['blogdate']);
   $blog_title = $blogpost['blogtitle'];
 
-  echo "<tr><td><a href=\"./blog.php?b=$blog_id\">",$blog_title,"</a></td><td>",date('d/m/Y', $correct_date),"</td><td><button type=\"button\">Edit</button></td><td><a href=\"./app/deleteblog.php?b=$blog_id\">Delete</a></td></tr>";
+  echo "<tr><td><a href=\"./app/blog.php?b=$blog_id\">",$blog_title,"</a></td><td>",date('d/m/Y', $correct_date),"</td><td><a href=\"./app/editblog.php?b=$blog_id\">Edit</a></td></td><td><a href=\"./app/deleteblog.php?b=$blog_id\">Delete</a></td></tr>";
 }
 
 echo "</table>";
