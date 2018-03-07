@@ -6,8 +6,6 @@ $stmt = $pdo->query('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blo
 $stmt->execute();
 $posts = $stmt->fetchAll();
 
-print_r($posts);
-
 foreach ($posts as $blogpost) {
   $blog_id = $blogpost['blogid'];
   $blog_title = $blogpost['blogtitle'];

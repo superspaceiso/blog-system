@@ -7,26 +7,29 @@ $stmt = $pdo->query('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blo
 $stmt->execute();
 $posts = $stmt->fetchAll();
 
+$language = "en";
+$url = "http://localhost/blog_system/app/blog.php?b=";
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 echo "<rss version=\"2.0\">\n";
 echo "<channel>\n";
 echo "<title>Blog</title>\n";
 echo "<link></link>\n";
-echo "<description></description>\n\n";
+echo "<description></description>\n";
+echo "<language>",$language,"</language>\n\n";
 
 foreach ($posts as $blogpost) {
   $blog_id = $blogpost['blogid'];
   $blog_title = $blogpost['blogtitle'];
-  $blog_content = $blogpost['blogcontent'];
+  $blog_content = mb_strimwidth($blogpost['blogcontent'],0,160,"...");
   $blog_date = strtotime($blogpost['blogdate']);
   $blog_author = $blogpost['username'];
 
   echo "<item>\n";
     echo "<title>",$blog_title,"</title>\n";
-    echo "<link>","</link>\n";
-    echo "<pubDate>","</pubDate>\n";
-    echo "<description>","</description>\n";
+    echo "<link>",$url,$blog_id,"</link>\n";
+    echo "<pubDate>",date("D, d M Y", $blog_date),"</pubDate>\n";
+    echo "<description>",$blog_content,"</description>\n";
   echo "</item>\n";
 
 }

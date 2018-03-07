@@ -1,5 +1,7 @@
 <?php
 
+require_once "./includes/header.php";
+
 session_start();
 
 if (!isset($_SESSION["username"])) {
@@ -20,3 +22,5 @@ header('Location: login.php');
 
 <h1>Previous Posts</h1>
 <?php require './app/bloglist.php'; ?>
+
+<?php require_once "./includes/footer.php" ?>
