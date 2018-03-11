@@ -14,5 +14,6 @@ $opt = [
 ];
 
 $pdo = new PDO($dsn, $username, $password, $opt);
+$pdo2 = new PDO($dsn, $username, $password, $opt);
 
 ?>
