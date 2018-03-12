@@ -2,7 +2,7 @@
 
 require_once 'db.php';
 
-$stmt = $pdo->query('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blogtitle, blog_posts.blogcontent, blog_posts.blogdate, user.userid, user.username FROM blog_posts LEFT JOIN user ON blog_posts.userid=user.userid');
+$stmt = $pdo->query('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blogtitle, blog_posts.blogcontent, blog_posts.blogdate, user.userid, user.username FROM blog_posts INNER JOIN user ON blog_posts.userid=user.userid');
 $stmt2 = $pdo->prepare('SELECT blog_posts.blogid, tag_map.blogid, tag_map.tagid, test_tags.tagid, test_tags.tag FROM blog_posts INNER JOIN tag_map ON blog_posts.blogid=tag_map.blogid INNER JOIN test_tags ON tag_map.tagid=test_tags.tagid WHERE blog_posts.blogid=?');
 $stmt->execute();
 $getposts = $stmt->fetchAll();
@@ -21,10 +21,11 @@ foreach ($getposts as $blogpost) {
 
   echo "Tags: ";
   foreach ($gettags as $blogtags) {
-    echo  $blogtags['tag']," ";
+    $blog_tag=$blogtags["tag"];
+    echo "<a href=\"./app/blog.php?t=$blog_tag\">",$blog_tag,"</a> ";
   }
   echo "<br>";
-  echo $blog_author," ", date('d/m/Y', $blog_date),"<br>";
+  echo "<a href=\"./app/blog.php?a=$blog_author\">",$blog_author,"</a> ", date('d/m/Y', $blog_date),"<br>";
 
 }
 
