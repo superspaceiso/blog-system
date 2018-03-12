@@ -20,9 +20,10 @@ if (empty($tags)){
 }
 elseif (isset($tags)){
   $exploded_tags = explode(",",$tags);
+  $trimmed_tags = array_map("trim",$exploded_tags);
   $postcontent->execute([$user_id, $blog_title, $blog_content, $blog_date]);
   $blog_id = $pdo->lastInsertId();
-    foreach ($exploded_tags as $blog_tag) {
+    foreach ($trimmed_tags as $blog_tag) {
       $tagsearch->execute([$blog_tag]);
       $gettags = $tagsearch->fetchAll();
       $counttags = $tagsearch->rowCount();
