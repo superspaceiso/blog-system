@@ -119,7 +119,6 @@ elseif (isset($_GET['m'])) {
     echo $blog_author;
 
   }
-
 }
 elseif (isset($_GET['y'])) {
 
@@ -144,7 +143,5 @@ elseif (isset($_GET['y'])) {
 
   }
 }
-
-
 
 ?>
