@@ -1,7 +1,5 @@
 #alert{
   display: none;
-  background-color: green;
-  border: 3px solid darkgreen;
   font-weight: bold;
   color: white;
   text-align: center;

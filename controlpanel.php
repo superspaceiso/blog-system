@@ -10,20 +10,6 @@ header('Location: login.php');
 
 ?>
 
-<script>
-  $(document).ready(function(){
-    $("#contentform").submit(function(){
-      event.preventDefault();
-      $.post("./app/postblog.php", $("#contentform").serialize(), function(data){
-        $("#alert").css("display","block");
-        $('#alert').delay(1000).fadeOut('slow');
-        $("#postlist").load("controlpanel.php #postlist");
-        $("#contentform")[0].reset();
-      });
-    });
-  });
-</script>
-
 <a href="./app/logoutscript.php">Log Out</a>
 
 <div class="row">
@@ -42,7 +28,7 @@ header('Location: login.php');
 </div>
 
 <div class="row">
-  <div id="alert">Posted</div>
+  <div id="alert"></div>
 </div>
 
 <div class="row">
@@ -52,5 +38,30 @@ header('Location: login.php');
 
 </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $("#contentform").submit(function(){
+      event.preventDefault();
+      $.post("./app/postblog.php", $("#contentform").serialize(), function(data){
+        $("#alert").text("Posted");
+        $("#alert").css({"display":"block","background-color":"green","border":"3px solid darkgreen"});
+        $('#alert').delay(1000).fadeOut('slow');
+        $("#contentform")[0].reset();
+        setTimeout(function(){location.reload()},2000);
+      });
+    });
+    $(".delete").click(function(){
+      event.preventDefault();
+      var id = $(this).attr("id");
+      $.post("./app/deleteblog.php",{"b":id}, function(data){
+        $("#alert").text("Deleted");
+        $("#alert").css({"display":"block","background-color":"red","border":"3px solid darkred"});
+        $('#alert').delay(1000).fadeOut('slow');
+        setTimeout(function(){location.reload()},2000);
+    });
+  });
+});
+</script>
 
 <?php require_once "./includes/footer.php" ?>
