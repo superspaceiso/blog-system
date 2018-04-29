@@ -17,7 +17,7 @@ if($stmt->rowCount() > 0){
     if(password_verify($password, $hashed_password)){
       $_SESSION["id"] = $getuser["userid"];
       $_SESSION["username"] = $getuser['username'];
-      header("location: ../controlpanel.php");
+      //header("location: ../controlpanel.php");
     } else {
       echo "Incorrect Password";
     }
