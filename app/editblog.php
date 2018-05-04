@@ -11,22 +11,20 @@ $getpost->execute([$id]);
 $post = $getpost->fetchAll();
 
 foreach ($post as $blogpost) {
+  $user_id = $blogpost['userid'];
   $blog_id = $blogpost['blogid'];
   $blog_title = $blogpost['blogtitle'];
   $blog_content = $blogpost['blogcontent'];
   $gettags->execute([$blog_id]);
   $tags = $gettags->fetchAll();
+  $comma_sep = implode(", ", array_column($tags, 'tag'));
 
   echo "<h1>New Post</h1>";
-  echo "<form id=\"contentform\" action=\"/update.php\" method=\"post\">";
+  echo "<form id=\"contentform\" action=\"./update.php\" method=\"post\">";
+  echo "<input type=\"hidden\" name=\"blogid\" value=\"$blog_id\"></input>";
   echo "<input class=\"u-full-width\" type=\"text\" name=\"title\" value=\"$blog_title\"></input><br>";
   echo "<textarea class=\"u-full-width\" name=\"content\">",$blog_content,"</textarea><br>";
-  echo "<input  class=\"u-full-width\" type=\"text\" name=\"tags\" value=\" ";
-  foreach ($tags as $blogtags) {
-    $blog_tag=$blogtags["tag"];
-    echo $blog_tag;
-  }
-  echo "\"></input><br>";
+  echo "<input class=\"u-full-width\" type=\"text\" name=\"tags\" value=\"$comma_sep\"></input><br>";
   echo "<button class=\"button-primary\">Update</button>";
   echo "</form>";
 

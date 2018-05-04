@@ -17,7 +17,7 @@ header('Location: login.php');
 
   <h1>New Post</h1>
   <form id="contentform" method="post">
-    <input type="hidden" name="id" value="<?php echo $_SESSION["id"]; ?>">
+    <input type="hidden" name="id" value="<?php echo $_SESSION["id"]; ?>"></input>
     <input class="u-full-width" type="text" name="title" placeholder="Title"></input><br>
     <textarea class="u-full-width" name="content" placeholder="Content"></textarea><br>
     <input  class="u-full-width" type="text" name="tags" placeholder="Tags, seperate using a comma eg Eggs,Milk,Flour"></input><br>
