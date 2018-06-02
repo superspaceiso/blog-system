@@ -19,15 +19,14 @@ if (empty($tags)){
   header("location: ../controlpanel.php");
 }
 elseif (isset($tags)){
-  $exploded_tags = explode(",",$tags);
-  $trimmed_tags = array_map("trim",$exploded_tags);
+  $exploded_tags = array_map("trim",explode(",",$tags));
   $postcontent->execute([$user_id, $blog_title, $blog_content, $blog_date]);
   $blog_id = $pdo->lastInsertId();
-    foreach ($trimmed_tags as $blog_tag) {
+    foreach ($exploded_tags as $blog_tag) {
       $tagsearch->execute([$blog_tag]);
       $gettags = $tagsearch->fetchAll();
       $counttags = $tagsearch->rowCount();
-      if ($counttags == 0) {
+      if ($counttags === 0) {
         $posttags->execute([$blog_tag]);
         $tag_id = $pdo2->lastInsertId();
         $tagmap->execute([$blog_id,$tag_id]);
