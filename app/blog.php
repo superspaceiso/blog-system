@@ -6,7 +6,7 @@ if (isset($_GET['b'])){
 
   $id = $_GET['b'];
 
-  $stmt = $pdo->prepare('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blogtitle, blog_posts.blogcontent, blog_posts.blogdate, user.username FROM blog_posts INNER JOIN user ON blog_posts.userid=user.userid WHERE blogid=?');
+  $stmt = $pdo->prepare('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blogtitle, blog_posts.blogcontent, blog_posts.blogdate, blog_posts.comment_enable, user.username FROM blog_posts INNER JOIN user ON blog_posts.userid=user.userid WHERE blogid=?');
   $stmt->execute([$id]);
   $posts = $stmt->fetchAll();
 
@@ -16,13 +16,18 @@ if (isset($_GET['b'])){
     $blog_content = $blogpost['blogcontent'];
     $blog_date = strtotime($blogpost['blogdate']);
     $blog_author = $blogpost['username'];
-
+    $blog_enabled_comments = $blogpost['comment_enable'];
 
     echo "<strong>",$blog_title,"</strong><br>";
     echo $blog_content,"<br>";
     echo date('d/m/Y', $blog_date),"<br>";
     echo $blog_author;
 
+    if($blog_enabled_comments == 1){
+      include 'comment_form.php';
+    } elseif($blog_enabled_comments == 0){
+      echo "Comments Disabled";
+    }
   }
 }
 elseif (isset($_GET['t'])) {

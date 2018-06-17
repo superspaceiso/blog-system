@@ -1,6 +1,7 @@
 <?php
 
 require_once 'db.php';
+require_once '../includes/header.php';
 
 $id=$_GET["b"];
 
@@ -29,5 +30,7 @@ foreach ($post as $blogpost) {
   echo "</form>";
 
 }
+
+require_once "../includes/footer.php"
 
 ?>
