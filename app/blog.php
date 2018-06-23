@@ -39,7 +39,8 @@ if (isset($_GET['b'])){
         echo $comment_name,"<br>";
         echo $comment_email,"<br>";
         echo $comment,"<br>";
-        //echo $comment_id,"<br>";
+        //echo "<strong><a href=\"./app/blog.php?c=$comment_id\">Reply</a></strong><br>";
+        
 
       }
 

@@ -7,7 +7,13 @@ $blog_title=$_POST["title"];
 $blog_content=$_POST["content"];
 $tags = $_POST["tags"];
 
-$post_content = $pdo->prepare('UPDATE blog_posts SET blogtitle = ?, blogcontent = ? WHERE blogid = ?');
+if($_POST["comments"] == "yes"){
+  $enable_comments = "1";
+} elseif($_POST["comments"] == "no"){
+  $enable_comments = "0";
+}
+
+$post_content = $pdo->prepare('UPDATE blog_posts SET blogtitle = ?, blogcontent = ?, comment_enable = ? WHERE blogid = ?');
 $post_tags = $pdo2->prepare('INSERT INTO test_tags (tag) VALUES (?)');
 $tag_search = $pdo->prepare('SELECT tagid,tag FROM test_tags WHERE tag=?');
 $tag_map = $pdo->prepare('REPLACE INTO tag_map (blogid,tagid) VALUES (?,?)');
@@ -15,12 +21,12 @@ $remove_tag = $pdo->prepare('DELETE FROM tag_map WHERE blogid = ? AND tagid = ?'
 $retrieve_tags = $pdo->prepare('SELECT test_tags.tag FROM blog_posts INNER JOIN tag_map ON blog_posts.blogid=tag_map.blogid INNER JOIN test_tags ON tag_map.tagid=test_tags.tagid WHERE blog_posts.blogid=?');
 
 if (empty($tags)){
-  $post_content->execute([$blog_title, $blog_contentm,$blog_id]);
+  $post_content->execute([$blog_title, $blog_content, $enable_comments, $blog_id]);
   header("location: ../controlpanel.php");
 }
 elseif (isset($tags)){
   $new_exploded_tags = array_map("trim",explode(",",$tags));
-  $post_content->execute([$blog_title, $blog_content, $blog_id]);
+  $post_content->execute([$blog_title, $blog_content, $enable_comments, $blog_id]);
   $retrieve_tags->execute([$blog_id]);
   $storred_tags = $retrieve_tags->fetchAll(PDO::FETCH_COLUMN);
   //Checks to see if any of the original tags have been removed.
@@ -55,5 +61,6 @@ elseif (isset($tags)){
       }
     }
   }
+  header("location: ../controlpanel.php");
 }
 ?>

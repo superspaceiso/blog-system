@@ -9,18 +9,24 @@ $blog_content=$_POST["content"];
 $blog_date = date("Y-m-d");
 $tags = $_POST["tags"];
 
-$postcontent = $pdo->prepare('INSERT INTO blog_posts (userid, blogtitle, blogcontent, blogdate) VALUES (?,?,?,?)');
+if($_POST["comments"] == "yes"){
+  $enable_comments = "1";
+} elseif($_POST["comments"] == "no"){
+  $enable_comments = "0";
+}
+
+$postcontent = $pdo->prepare('INSERT INTO blog_posts (userid, blogtitle, blogcontent, blogdate, comment_enable) VALUES (?,?,?,?,?)');
 $posttags = $pdo2->prepare('INSERT INTO test_tags (tag) VALUES (?)');
 $tagsearch = $pdo->prepare('SELECT tagid,tag FROM test_tags WHERE tag=?');
 $tagmap = $pdo->prepare('INSERT INTO tag_map (blogid,tagid) VALUES (?,?)');
 
 if (empty($tags)){
-  $postcontent->execute([$user_id, $blog_title, $blog_content, $blog_date]);
+  $postcontent->execute([$user_id, $blog_title, $blog_content, $blog_date, $enable_comments]);
   header("location: ../controlpanel.php");
 }
 elseif (isset($tags)){
   $exploded_tags = array_map("trim",explode(",",$tags));
-  $postcontent->execute([$user_id, $blog_title, $blog_content, $blog_date]);
+  $postcontent->execute([$user_id, $blog_title, $blog_content, $blog_date, $enable_comments]);
   $blog_id = $pdo->lastInsertId();
     foreach ($exploded_tags as $blog_tag) {
       $tagsearch->execute([$blog_tag]);

@@ -21,6 +21,11 @@ header('Location: login.php');
     <input class="u-full-width" type="text" name="title" placeholder="Title"></input><br>
     <textarea class="u-full-width" name="content" placeholder="Content"></textarea><br>
     <input  class="u-full-width" type="text" name="tags" placeholder="Tags, seperate using a comma eg Eggs,Milk,Flour"></input><br>
+    Enable Comments:
+    <select name="comments">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
     <button class="button-primary">Post</button>
   </form>
 
