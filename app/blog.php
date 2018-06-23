@@ -1,6 +1,7 @@
 <?php
 
 require_once 'db.php';
+require_once '../includes/header.php';
 
 if (isset($_GET['b'])){
 
@@ -25,6 +26,7 @@ if (isset($_GET['b'])){
 
     if($blog_enabled_comments == 1){
       include 'comment_form.php';
+
     } elseif($blog_enabled_comments == 0){
       echo "Comments Disabled";
     }
@@ -34,7 +36,7 @@ elseif (isset($_GET['t'])) {
 
   $tag = $_GET['t'];
 
-  $stmt = $pdo->prepare('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blogtitle, blog_posts.blogcontent, blog_posts.blogdate, user.username, user.userid, tag_map.blogid, tag_map.tagid, test_tags.tagid, test_tags.tag FROM blog_posts INNER JOIN user ON blog_posts.userid=user.userid INNER JOIN tag_map ON blog_posts.blogid=tag_map.blogid INNER JOIN test_tags ON tag_map.tagid=test_tags.tagid WHERE test_tags.tag LIKE ? ');
+  $stmt = $pdo->prepare('SELECT blog_posts.blogid, blog_posts.userid, blog_posts.blogtitle, blog_posts.blogcontent, blog_posts.blogdate, blog_posts.comment_enable, user.username, user.userid, tag_map.blogid, tag_map.tagid, test_tags.tagid, test_tags.tag FROM blog_posts INNER JOIN user ON blog_posts.userid=user.userid INNER JOIN tag_map ON blog_posts.blogid=tag_map.blogid INNER JOIN test_tags ON tag_map.tagid=test_tags.tagid WHERE test_tags.tag LIKE ? ');
   $stmt->execute([$tag]);
   $posts = $stmt->fetchAll();
 
@@ -44,12 +46,16 @@ elseif (isset($_GET['t'])) {
     $blog_content = $blogpost['blogcontent'];
     $blog_date = strtotime($blogpost['blogdate']);
     $blog_author = $blogpost['username'];
-
+    $blog_enabled_comments = $blogpost['comment_enable'];
 
     echo "<strong>",$blog_title,"</strong><br>";
     echo $blog_content,"<br>";
     echo date('d/m/Y', $blog_date),"<br>";
     echo $blog_author;
+
+    if($blog_enabled_comments == 1){
+      echo "Comments:";
+    }
 
   }
 }
